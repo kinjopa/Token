@@ -2,6 +2,7 @@
 
 namespace App\Http\Api\v1\foo;
 
+use App\Helpers\JWTDecode;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -12,12 +13,12 @@ class FooController extends Controller
         $authHeader = $request->header('Authorization');
 
         $storage_dir = storage_path('keys');
-        $jwtGenerator = new \App\Helpers\JWTGenerator($storage_dir);
+        $jwtDecode = new JWTDecode($storage_dir);
 
         $jwtToken = str_replace('Bearer ', '', $authHeader);
 
 
-        $isValidToken = $jwtGenerator->verifyToken($jwtToken);
+        $isValidToken = $jwtDecode->verifyToken($jwtToken);
 
         if ($isValidToken) {
             http_response_code(200);
